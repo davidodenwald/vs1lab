@@ -46,8 +46,8 @@ var gtaLocator = (function GtaLocator() {
         return position.coords.longitude;
     };
 
-    // Hier Google Maps API Key eintragen
-    var apiKey = "AIzaSyA59zKDmJYXDe3A75HLYwKbueBg5SbQdLY";
+    // Hier MapQuest API Key eintragen
+    var apiKey = "cXV1zzPXIMQ9PtruStvmB64S3f4AFNQn";
 
     /**
      * Funktion erzeugt eine URL, die auf die Karte verweist.
@@ -58,18 +58,17 @@ var gtaLocator = (function GtaLocator() {
      * tags : Array mit Geotag Objekten, das auch leer bleiben kann
      * zoom: Zoomfaktor der Karte
      */
-    var getLocationMapSrc = function (lat, lon, tags) {
+    var getLocationMapSrc = function (lat, lon, tags, zoom) {
 
-        var tagList = "";
-        if (typeof tags !== 'undefined') tags.forEach(function (tag) {
-            tagList += "&markers=%7Clabel:" + tag.name +
-                "%7C" + tag.latitude + "," + tag.longitude;
+        var tagList = "&locations=" + lat + "," + lon + "|marker-lg-D51A1A-A20000";
+        if (tags !== undefined) tags.forEach(function(tag) {
+            tagList += "||" + tag.latitude + "," + tag.longitude;
         });
 
-        var urlString = "http://maps.googleapis.com/maps/api/staticmap?center=" +
-            lat + "," + lon + "&markers=%7Clabel:you%7C" + lat + "," + lon +
-            tagList + "&size=640x480&sensor=false&key=" + apiKey;
+        var urlString = "https://www.mapquestapi.com/staticmap/v5/map?key=" +
+            apiKey + "&size=600,400" + "&zoom=" + zoom + "&center=" + lat + "," + lon + tagList + "&defaultMarker=marker-md-3B5998-22407F";
 
+        console.log("Generated Maps Url: " + urlString);
         return urlString;
     };
 
@@ -101,7 +100,7 @@ var gtaLocator = (function GtaLocator() {
                         });
                     });
                     // change default image to google-maps map
-                    $('#result-img').attr("src", getLocationMapSrc(location.coords.latitude, location.coords.longitude, tabList));
+                    $('#result-img').attr("src", getLocationMapSrc(location.coords.latitude, location.coords.longitude, tabList, 13));
                 },
                 function (errorMsg) {
                     alert(errorMsg);
