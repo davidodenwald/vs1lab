@@ -3,16 +3,19 @@ body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
   background-color: lightsteelblue;
 }
+
 a {
   color: lightsteelblue;
 }
-header{
+
+header {
   background-color: steelblue;
   color: white;
   padding: 15px;
   box-shadow: 5px 5px 5px grey;
 }
-footer{
+
+footer {
   background-color: steelblue;
   color: lightsteelblue;
   padding: 15px;
@@ -26,7 +29,8 @@ footer{
   justify-content: center;
 
 }
-.tagging{
+
+.tagging {
   width: 30%;
   padding: 15px;
   margin-top: 10px;
@@ -35,7 +39,8 @@ footer{
   flex-direction: column;
   flex-wrap: wrap;
 }
-.discovery{
+
+.discovery {
   width: 60%;
   padding: 15px;
   margin-top: 10px;
@@ -44,48 +49,58 @@ footer{
   flex-direction: column;
   flex-wrap: wrap;
 }
-.innerDiscovery{
+
+.innerDiscovery {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   margin-top: 10px;
 }
-.taglist{
+
+.taglist {
   width: 40%;
   display: flex;
   flex-direction: column;
 }
-.tagmap{
-  width: 400px;
+
+.tagmap {
+  width: 55%;
   display: flex;
   flex-direction: column;
 }
-#longitude{
+
+#longitude {
   width: 90%;
   margin-bottom: 10px;
 }
-#latitude{
+
+#latitude {
   width: 90%;
   margin-bottom: 10px;
 }
-#hashtag{
+
+#hashtag {
   width: 90%;
   margin-bottom: 10px;
 }
-#name{
+
+#name {
   width: 90%;
   margin-bottom: 10px;
 }
-#searchterm{
+
+#searchterm {
   width: 80%;
   margin-bottom: 10px;
 }
-.taglist li{
+
+.taglist li {
   margin-bottom: 10px;
-  background-color:steelblue;
+  background-color: steelblue;
   box-shadow: 5px 5px 5px grey;
   padding: 10px;
 }
-.taglist ul{
+
+.taglist ul {
   list-style-type: none;
 }
