@@ -41,7 +41,7 @@
 					<input type="text" id="name" name="name" placeholder="Karlsruhe" maxlength="10" required>
 				</p>
 				<p>
-					<button type="button">Submit</button>
+					<button type="button" id="add-btn">Submit</button>
 				</p>
 			</fieldset>
 		</section>
@@ -52,7 +52,7 @@
 				<legend>Filter by Searchterm</legend>
 				<p>
 					<input type="text" id="searchterm" name="searchterm" placeholder="Searchterm">
-					<input type="button" value="Apply">
+					<input type="button" id="filter-btn" value="Apply">
 					<input type="reset" value="Remove">
 					<input type="text" id="hidden-latitude" name="latitude" value="<%= latitude %>" hidden>
 					<input type="text" id="hidden-longitude" name="longitude" value="<%= longitude %>" hidden>

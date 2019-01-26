@@ -1,3 +1,11 @@
+$("#add-btn").click(function() {
+    console.log("add a new location!");
+});
+
+$("#filter-btn").click(function() {
+    console.log("filter locations!");
+});
+
 /**
  * GeoTagApp Locator Modul
  */
