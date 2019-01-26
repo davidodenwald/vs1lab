@@ -1,24 +1,55 @@
+function GeoTag(latitude, longitude, name, hashtag) {
+    this.latitude = latitude;
+    this.longitude = longitude;
+    this.name = name;
+    this.hashtag = hashtag;
+}
+
 $("#add-btn").click(function() {
-    console.log("add a new location!");
+    var ajax = new XMLHttpRequest();
+
+    ajax.onreadystatechange = function() {
+        if (ajax.readyState == 4) {
+            genList(JSON.parse(ajax.response));
+        }
+    }
+    ajax.open("POST", "/geotags", true);
+    ajax.setRequestHeader("Content-Type", "application/json")
+    ajax.send(JSON.stringify(new GeoTag(
+        $("#latitude").val(),
+        $("#longitude").val(),
+        $("#name").val(),
+        $("#hashtag").val()
+    )));
 });
 
 $("#filter-btn").click(function() {
-    console.log("filter locations!");
+    var ajax = new XMLHttpRequest();
+
+    ajax.onreadystatechange = function() {
+        if (ajax.readyState == 4) {
+            genList(JSON.parse(ajax.response));
+        }
+    }
+    if ($("#searchterm").val()) {
+        ajax.open("GET", `/geotags?search=${$("#searchterm").val()}`, true);
+    } else {
+        ajax.open("GET", `/geotags?lat=${$("#hidden-latitude").val()}&lon=${$("#hidden-longitude").val()}`, true);
+    }
+    ajax.send();
 });
+
+var genList = function(tags) {
+    $("#results").html("");
+    tags.forEach(tag => {
+        $("#results").append(`<li>${tag.name} (${tag.latitude}, ${tag.longitude}) ${tag.hashtag}</li>`)
+    });
+}
 
 /**
  * GeoTagApp Locator Modul
  */
 var gtaLocator = (function GtaLocator() {
-
-    // Private Member
-
-    /**
-     * Funktion spricht Geolocation API an.
-     * Bei Erfolg Callback 'onsuccess' mit Position.
-     * Bei Fehler Callback 'onerror' mit Meldung.
-     * Callback Funktionen als Parameter übergeben.
-     */
     var tryLocate = function (onsuccess, onerror) {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(onsuccess, function (error) {
@@ -44,28 +75,9 @@ var gtaLocator = (function GtaLocator() {
         }
     };
 
-    // Auslesen Breitengrad aus der Position
-    var getLatitude = function (position) {
-        return position.coords.latitude;
-    };
-
-    // Auslesen Längengrad aus Position
-    var getLongitude = function (position) {
-        return position.coords.longitude;
-    };
-
     // Hier MapQuest API Key eintragen
     var apiKey = "cXV1zzPXIMQ9PtruStvmB64S3f4AFNQn";
 
-    /**
-     * Funktion erzeugt eine URL, die auf die Karte verweist.
-     * Falls die Karte geladen werden soll, muss oben ein API Key angegeben
-     * sein.
-     *
-     * lat, lon : aktuelle Koordinaten (hier zentriert die Karte)
-     * tags : Array mit Geotag Objekten, das auch leer bleiben kann
-     * zoom: Zoomfaktor der Karte
-     */
     var getLocationMapSrc = function (lat, lon, tags, zoom) {
 
         var tagList = "&locations=";
@@ -74,7 +86,7 @@ var gtaLocator = (function GtaLocator() {
         });
 
         var urlString = "https://www.mapquestapi.com/staticmap/v5/map?key=" +
-            apiKey + "&size=600,400" + "&zoom=" + zoom + "&center=" + lat + "," + lon + 
+            apiKey + "&size=600,400" + "&zoom=" + zoom + "&center=" + lat + "," + lon +
             tagList + "&defaultMarker=marker-md-3B5998-22407F";
 
         console.log("Generated Maps Url: " + urlString);
@@ -83,24 +95,23 @@ var gtaLocator = (function GtaLocator() {
 
     return {
         updateLocation: function () {
-            if (!$('#latitude').val() && !$('#longitude').val()) {
-                tryLocate(
-                    function (location) {
-                        // fill fields in tagging form
-                        $('#latitude').val(location.coords.latitude);
-                        $('#longitude').val(location.coords.longitude);
+            tryLocate(
+                function (location) {
+                    // fill fields in tagging form
+                    $('#latitude').val(location.coords.latitude);
+                    $('#longitude').val(location.coords.longitude);
 
-                        // fill hidden fields of discovery form
-                        $('#hidden-latitude').val(location.coords.latitude);
-                        $('#hidden-longitude').val(location.coords.longitude);
+                    // fill hidden fields of discovery form
+                    $('#hidden-latitude').val(location.coords.latitude);
+                    $('#hidden-longitude').val(location.coords.longitude);
 
-                        $('#result-img').attr("src", getLocationMapSrc($('#latitude').val(), $('#longitude').val(), tabList, 12));
+                    $('#result-img').attr("src", getLocationMapSrc($('#latitude').val(), $('#longitude').val(), tabList, 12));
 
-                    },
-                    function (errorMsg) {
-                        alert(errorMsg);
-                    });
-            }
+                },
+                function (errorMsg) {
+                    alert(errorMsg);
+                }
+            );
 
             var tabList = [];
             $('#results').children().toArray().forEach(location => {
@@ -114,7 +125,10 @@ var gtaLocator = (function GtaLocator() {
             });
 
             // change default image
-            $('#result-img').attr("src", getLocationMapSrc($('#latitude').val(), $('#longitude').val(), tabList, 12));
+            $('#result-img').attr(
+                "src",
+                getLocationMapSrc($('#latitude').val(), $('#longitude').val(), tabList, 12)
+            );
         }
 
     };

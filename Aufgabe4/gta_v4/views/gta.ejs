@@ -26,11 +26,11 @@
 				<legend>Enter new GEOTag</legend>
 				<p>
 					<label for="latitude">Latitude</label><br />
-					<input type="text" id="latitude" name="latitude" placeholder="49.006889" value="<%= latitude %>" required>
+					<input type="text" id="latitude" name="latitude" placeholder="49.006889" required>
 				</p>
 				<p>
 					<label for="longitude">Longitude</label><br />
-					<input type="text" id="longitude" name="longitude" placeholder="8.403653" value="<%= longitude %>" required>
+					<input type="text" id="longitude" name="longitude" placeholder="8.403653" required>
 				</p>
 				<p>
 					<label for="hashtag">Hashtag</label><br />
@@ -54,22 +54,13 @@
 					<input type="text" id="searchterm" name="searchterm" placeholder="Searchterm">
 					<input type="button" id="filter-btn" value="Apply">
 					<input type="reset" value="Remove">
-					<input type="text" id="hidden-latitude" name="latitude" value="<%= latitude %>" hidden>
-					<input type="text" id="hidden-longitude" name="longitude" value="<%= longitude %>" hidden>
+					<input type="text" id="hidden-latitude" name="latitude" hidden>
+					<input type="text" id="hidden-longitude" name="longitude" hidden>
 				</p>
 			</fieldset>
 			<section class="innerDiscovery">
 				<div class="taglist">
-					<ul id="results">
-						<% if (taglist !== undefined) taglist.forEach(function(gtag) { %>
-						<li>
-							<%= gtag.name %> (
-							<%= gtag.latitude %>,
-							<%= gtag.longitude %>)
-							<%= gtag.hashtag %>
-						</li>
-						<% }); %>
-					</ul>
+					<ul id="results"></ul>
 				</div>
 
 				<div class="tagmap">
