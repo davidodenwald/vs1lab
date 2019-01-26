@@ -66,7 +66,7 @@ var gtaLocator = (function GtaLocator() {
         });
 
         var urlString = "https://www.mapquestapi.com/staticmap/v5/map?key=" +
-            apiKey + "&size=600,400" + "&zoom=" + zoom + "&center=" + lat + "," + lon + 
+            apiKey + "&size=600,400" + "&zoom=" + zoom + "&center=" + lat + "," + lon +
             tagList + "&defaultMarker=marker-md-3B5998-22407F";
 
         console.log("Generated Maps Url: " + urlString);

@@ -44,6 +44,7 @@ var genList = function(tags) {
     tags.forEach(tag => {
         $("#results").append(`<li>${tag.name} (${tag.latitude}, ${tag.longitude}) ${tag.hashtag}</li>`)
     });
+    gtaLocator.updateLocation(tags);
 }
 
 /**
@@ -94,51 +95,26 @@ var gtaLocator = (function GtaLocator() {
     };
 
     return {
-        updateLocation: function () {
-            tryLocate(
-                function (location) {
-                    // fill fields in tagging form
-                    $('#latitude').val(location.coords.latitude);
-                    $('#longitude').val(location.coords.longitude);
+        updateLocation: function (tags) {
+            if (!$('#latitude').val() && !$('#longitude').val()) {
+                tryLocate(
+                    function (location) {
+                        // fill fields in tagging form
+                        $('#latitude').val(location.coords.latitude);
+                        $('#longitude').val(location.coords.longitude);
 
-                    // fill hidden fields of discovery form
-                    $('#hidden-latitude').val(location.coords.latitude);
-                    $('#hidden-longitude').val(location.coords.longitude);
-
-                    $('#result-img').attr("src", getLocationMapSrc($('#latitude').val(), $('#longitude').val(), tabList, 12));
-
-                },
-                function (errorMsg) {
-                    alert(errorMsg);
-                }
-            );
-
-            var tabList = [];
-            $('#results').children().toArray().forEach(location => {
-                var coords = location.innerHTML.match(/[0-9.]+/g);
-
-                tabList.push({
-                    'name': location.innerHTML.match(/^\w+/),
-                    'latitude': coords[0],
-                    'longitude': coords[1]
-                });
-            });
-
-            // change default image
-            $('#result-img').attr(
-                "src",
-                getLocationMapSrc($('#latitude').val(), $('#longitude').val(), tabList, 12)
-            );
+                        $('#result-img').attr("src", getLocationMapSrc($('#latitude').val(), $('#longitude').val(), tags, 12));
+                    },
+                    function (errorMsg) {
+                        alert(errorMsg);
+                    });
+            } else {
+                $('#result-img').attr("src", getLocationMapSrc($('#latitude').val(), $('#longitude').val(), tags, 12));
+            }
         }
-
     };
 })();
 
-/**
- * $(document).ready wartet, bis die Seite komplett geladen wurde. Dann wird die
- * angegebene Funktion aufgerufen. An dieser Stelle beginnt die eigentliche Arbeit
- * des Skripts.
- */
 $(document).ready(function () {
     gtaLocator.updateLocation();
 });
